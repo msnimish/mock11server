@@ -16,10 +16,7 @@ export const addBug = async (req, res) => {
       severity: req.body.severity,
     });
     await bugs.save();
-    return res.status(200).send({
-      message: "Bug added successfully",
-      data: bugs
-    });
+    return res.status(200).send(bugs);
   } catch (err) {
     console.log(err);
   }
@@ -28,10 +25,7 @@ export const addBug = async (req, res) => {
 export const deleteBug = async (req, res) => {
     try {
       let bug = await Bug.findByIdAndDelete(req.params.id);
-      return res.status(200).send({
-        message: "Bug deleted successfully",
-        data: bug
-      });
+      return res.status(200).send(bug);
     } catch (err) {
       console.log(err);
     }

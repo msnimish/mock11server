@@ -7,7 +7,6 @@ dotenv.config();
 
 
 
-
 // const User = require("../models/user.model.js");
 
 
@@ -16,7 +15,7 @@ dotenv.config();
 
 export const login = async(req,res) =>{
     try{
-        const {email,password} = req.body;
+        const {email,password} = req.body.data;
         const user = await User.findOne({email});
         if(!user){
             return res.status(400).send({message:"Invalid Credentials"});
@@ -37,12 +36,13 @@ export const login = async(req,res) =>{
 
 export const signup = async (req,res) => {
     try{
-        const {email,password} = req.body;
+        const {email,password} = req.body.data;
         const user = new User({
             email,
             password
         });
         const salt = await bcrypt.genSalt(10);
+        console.log(password,salt);
         user.password = await bcrypt.hash(password,salt);
         await user.save();
         return res.status(200).send(user);
@@ -50,6 +50,5 @@ export const signup = async (req,res) => {
     }catch(err){
         console.log(err);
         return res.status(500).send({message: "Something went wrong during Signup"});
-
     }
 }
